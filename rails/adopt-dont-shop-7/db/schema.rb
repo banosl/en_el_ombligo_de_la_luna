@@ -10,9 +10,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_24_213052) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_21_165502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "pet_applications", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "address"
+    t.string "address2"
+    t.string "city"
+    t.string "state"
+    t.integer "zip_code"
+    t.bigint "pet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["pet_id"], name: "index_pet_applications_on_pet_id"
+  end
 
   create_table "pets", force: :cascade do |t|
     t.boolean "adoptable"
@@ -52,6 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_24_213052) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "pet_applications", "pets"
   add_foreign_key "pets", "shelters"
   add_foreign_key "veterinarians", "veterinary_offices"
 end
