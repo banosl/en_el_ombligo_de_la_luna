@@ -8,4 +8,5 @@ class PetApplication < ApplicationRecord
   validates :city, presence: true
   validates :state, presence: true
   validates :zip_code, presence: true, numericality: true
+  validates :description, presence: true
 end
