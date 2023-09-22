@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_22_162924) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_22_173825) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,6 +34,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_162924) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "description"
+    t.bigint "shelter_id", null: false
+    t.index ["shelter_id"], name: "index_applications_on_shelter_id"
   end
 
   create_table "pets", force: :cascade do |t|
@@ -76,6 +78,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_22_162924) do
 
   add_foreign_key "application_pets", "applications"
   add_foreign_key "application_pets", "pets"
+  add_foreign_key "applications", "shelters"
   add_foreign_key "pets", "shelters"
   add_foreign_key "veterinarians", "veterinary_offices"
 end
