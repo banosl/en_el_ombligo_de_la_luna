@@ -1,5 +1,6 @@
-class PetApplication < ApplicationRecord
-  belongs_to :pet
+class Application < ApplicationRecord
+  has_many :application_pets, dependent: :destroy
+  has_many :pets, through: :application_pets
 
   validates :first_name, presence: true 
   validates :last_name, presence: true
