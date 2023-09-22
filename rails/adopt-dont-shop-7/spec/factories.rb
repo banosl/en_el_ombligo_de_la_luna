@@ -3,6 +3,7 @@ FactoryBot.define do
     name {"#{Faker::Appliance.brand} Shelter"}
     city {Faker::Address.city}
     rank {Faker::Number.between(from: 1, to:1000)}
+    foster_program {Faker::Boolean.boolean}
   end
 
   factory :pet do
@@ -19,7 +20,7 @@ FactoryBot.define do
     city {Faker::Address.city}
     state {Faker::Address.state}
     zip_code {Faker::Address.zip_code}
-    description {Faker::HitchhikersGuideToTheGalaxy.quote}
+    description {Faker::JapaneseMedia::OnePiece.quote}
   end
 
   factory :application_pet do
