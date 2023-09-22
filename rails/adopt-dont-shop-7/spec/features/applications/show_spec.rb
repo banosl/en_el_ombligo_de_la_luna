@@ -9,9 +9,9 @@ RSpec.describe 'Pet application show page' do
       @pet3 = create(:pet, shelter: @shelter)
       @pet4 = create(:pet, shelter: @shelter)
       @pet5 = create(:pet, shelter: @shelter)
-      @application1 = create(:application)
-      @application2 = create(:application)
-      @application3 = create(:application)
+      @application1 = create(:application, shelter: @shelter)
+      @application2 = create(:application, shelter: @shelter)
+      @application3 = create(:application, shelter: @shelter)
       @application_pet1 = create(:application_pet, pet: @pet1, application: @application1)
       @application_pet2 = create(:application_pet, pet: @pet1, application: @application1)
       @application_pet3 = create(:application_pet, pet: @pet1, application: @application2)
@@ -20,10 +20,10 @@ RSpec.describe 'Pet application show page' do
     end
     it 'shows the name of the applicant' do
       visit application_path(@application1.id)
-      expect(page).to have_content("Applicant name: #{@application1.name}")
+      expect(page).to have_content("Applicant name: #{@application1.first_name} #{@application1.last_name}")
 
       visit application_path(@application2.id)
-      expect(page).to have_content("Applicant name: #{@application2.name}")
+      expect(page).to have_content("Applicant name: #{@application2.first_name} #{@application2.last_name}")
     end
 
     it 'shows the full address of the applicant including street address, city, state, and zip' do

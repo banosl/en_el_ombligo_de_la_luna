@@ -21,6 +21,7 @@ FactoryBot.define do
     state {Faker::Address.state}
     zip_code {Faker::Address.zip_code}
     description {Faker::JapaneseMedia::OnePiece.quote}
+    shelter
   end
 
   factory :application_pet do
