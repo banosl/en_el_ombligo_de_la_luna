@@ -13,10 +13,11 @@ RSpec.describe 'Pet application show page' do
       @application2 = create(:application, shelter: @shelter)
       @application3 = create(:application, shelter: @shelter)
       @application_pet1 = create(:application_pet, pet: @pet1, application: @application1)
-      @application_pet2 = create(:application_pet, pet: @pet1, application: @application1)
+      @application_pet2 = create(:application_pet, pet: @pet3, application: @application1)
       @application_pet3 = create(:application_pet, pet: @pet1, application: @application2)
       @application_pet4 = create(:application_pet, pet: @pet2, application: @application3)
       @application_pet5 = create(:application_pet, pet: @pet3, application: @application3)
+      @application_pet6 = create(:application_pet, pet: @pet2, application: @application1)
     end
     it 'shows the name of the applicant' do
       visit application_path(@application1.id)
@@ -36,9 +37,29 @@ RSpec.describe 'Pet application show page' do
         "Address: #{@application3.address} #{@application3.address2}, #{@application3.city}, #{@application3.state}, #{@application3.zip_code}")
     end
 
-    it "Description of why the applicant says they'd be a good home for this pet(s)" 
+    it "Description of why the applicant says they'd be a good home for this pet(s)" do
+      visit application_path(@application2.id)
+      expect(page).to have_content("Why we'd make a good home for these pet(s): #{@application2.description}")
 
-    it "names of all pets that this application is for (all names of pets should be links to their show page)"
+      visit application_path(@application3.id)
+      expect(page).to have_content("Why we'd make a good home for these pet(s): #{@application3.description}")
+
+      visit application_path(@application1.id)
+      expect(page).to have_content("Why we'd make a good home for these pet(s): #{@application1.description}")
+    end
+    
+    it "names of all pets that this application is for (all names of pets should be links to their show page)" do
+      visit application_path(@application2.id)
+      within ("#pets") do
+        expect(page).to have_content("\n#{@pet1.name}")
+      end
+      
+      visit application_path(@application3.id)
+      within ("#pets") do
+        save_and_open_page
+        expect(page).to have_content("\n#{@pet2.name} #{@pet3.name}")
+      end
+    end
 
     it "shows The Application's status, either In Progress, Pending, Accepted, or Rejected"
   end
