@@ -9,6 +9,8 @@
 <section id="pets">
   <p>Pets on application:</p>
     <% @pets.each do |pet| %>
-      <li><%= pet.name %></li>
+      <li><%= link_to pet.name, pet_path(pet.id) %></li>
     <% end %>
 </section>
+
+<p>Application status: <%= @application.status %></p>

@@ -56,11 +56,24 @@ RSpec.describe 'Pet application show page' do
       
       visit application_path(@application3.id)
       within ("#pets") do
-        save_and_open_page
         expect(page).to have_content("\n#{@pet2.name} #{@pet3.name}")
       end
     end
 
-    it "shows The Application's status, either In Progress, Pending, Accepted, or Rejected"
+    it "shows The Application's status, either In Progress, Pending, Accepted, or Rejected" do
+      visit application_path(@application2.id)
+      expect(page).to have_content("Application status: In Progress")
+
+      visit application_path(@application3.id)
+      expect(page).to have_content("Application status: In Progress")
+    end
+
+    it "each pet name is a link to the pet's show page" do
+      visit application_path(@application1.id)
+
+      expect(page).to have_link("#{@pet1.name}", :href => pet_path(@pet1.id))
+      expect(page).to have_link("#{@pet3.name}", :href => pet_path(@pet3.id))
+      expect(page).to have_link("#{@pet2.name}", :href => pet_path(@pet2.id))
+    end
   end
 end
