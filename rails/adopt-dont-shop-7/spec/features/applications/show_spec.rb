@@ -112,9 +112,14 @@ RSpec.describe 'Pet application show page' do
         click_button("Search")
 
         within ("#results") do
-
+          click_link "Adopt this Pet"
         end
       end
+
+      within ("#pets") do
+        expect(page).to have_content("\n#{@pet1.name} #{@pet7.name}")
+      end
+      save_and_open_page
     end
   end
 end

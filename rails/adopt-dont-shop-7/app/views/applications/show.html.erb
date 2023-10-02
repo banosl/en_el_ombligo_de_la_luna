@@ -32,7 +32,7 @@
 <% if @name %>
   <section id="results">
   <p>Results:</p>
-    <li><%= @name %></li>
+    <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
   </section>
 <% end %>
 </section>
