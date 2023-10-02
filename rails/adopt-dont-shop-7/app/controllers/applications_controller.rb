@@ -2,6 +2,15 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find_by_id(params[:id])
     @pets = @application.pets
+    
+    if params[:commit] == "Search"
+      if Pet.find_by(name: params[:pet_search])
+        pet_result = Pet.find_by(name: params[:pet_search])
+        @name = pet_result.name
+      else
+        @name = "No pets by that name"
+      end
+    end
   end
 
   def new
