@@ -2,7 +2,12 @@
 
 <p>Applicant name: <%= @application.first_name%> <%= @application.last_name %></p>
 
-<p>Address: <%= @application.address %> <%= @application.address2 %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% if !@application.address_2 == "" %>
+  <p>Address: <%= @application.address_1 %>  <%= @application.address_2  %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% else %>
+  <p>Address: <%= @application.address_1 %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% end %>
+
 
 <p>Why we'd make a good home for these pet(s): <%= @application.description %></p>
 
