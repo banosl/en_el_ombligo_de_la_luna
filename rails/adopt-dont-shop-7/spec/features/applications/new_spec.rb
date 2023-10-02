@@ -34,10 +34,25 @@ RSpec.describe "visiting the new application form page" do
 
     click_button "submit"
 
-    save_and_open_page
     expect(page).to have_content("Applicant name: Bob Suarez de la Torre")
     expect(page).to have_content("Address: 123 S Havana St, Wheat Ridge, CO, 80033")
     expect(page).to have_content("Why we'd make a good home for these pet(s): Because I love animals and I have a 400 acre yard for them run wild and free.")
     expect(page).to have_content("Application status: In Progress")
+  end
+
+  it "user fails to fill out a part of the form, they get an error message" do
+    visit pet_path(@pet1.id)
+    click_link "Start an Application"
+    expect(current_path).to eq(new_application_path)
+
+    fill_in "Last name", with: "Suarez de la Torre"
+    fill_in :address_1, with: "123 S Havana St"
+    fill_in "State", with: "CO"
+    fill_in "Zip Code", with: "80033"
+    fill_in "Why would you make a good home?", with: "Because I love animals and I have a 400 acre yard for them run wild and free."
+
+    click_button "submit"
+
+    expect(page).to have_content("A field can't be empty")
   end
 end

@@ -13,6 +13,9 @@ class ApplicationsController < ApplicationController
     
     if application.save
       redirect_to application_path(application.id)
+    else
+      redirect_to new_application_path
+      flash.alert = "A field can't be empty"
     end
   end
 
