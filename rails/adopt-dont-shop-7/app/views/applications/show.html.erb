@@ -13,9 +13,13 @@
 
 <section id="pets">
   <p>Pets on application:</p>
-    <% @pets.each do |pet| %>
-      <li><%= link_to pet.name, pet_path(pet.id) %></li>
-    <% end %>
+  <% if @pets != [] %>
+      <% @pets.each do |pet| %>
+        <li><%= link_to pet.name, pet_path(pet.id) %></li>
+      <% end %>
+  <% else %>
+    <li> None </li>
+  <% end %>
 </section>
 
 <p>Application status: <%= @application.status %></p>
@@ -39,7 +43,7 @@
   <% end %>
   </section>
 
-  <% if @pets %>
+  <% if @pets != [] %>
     <section id=form_submission>
       <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
         <%= form.label :good_owner, "Why would you make a good owner?" %>

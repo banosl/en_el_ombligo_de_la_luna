@@ -151,5 +151,13 @@ RSpec.describe 'Pet application show page' do
         expect(page).to_not have_field(:good_owner)
         expect(page).to_not have_button("Submit application")
     end
+
+    it "when there are not pets on an application, a user can't submit the application" do
+      application4 = create(:application, shelter: @shelter)
+
+      visit application_path(application4.id)
+      save_and_open_page
+      expect(page).to_not have_button("Submit application")
+    end
   end
 end
