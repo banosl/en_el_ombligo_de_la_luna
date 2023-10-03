@@ -2,7 +2,6 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find_by_id(params[:id])
     @pets = @application.pets
-    @shelter = @application.shelter
 
     if params[:commit] == "Search"
       if Pet.where("name like ?","%#{ params[:pet_search] }%")
@@ -44,7 +43,6 @@ class ApplicationsController < ApplicationController
                     :city,
                     :state,
                     :zip_code,
-                    :description,
-                    :shelter_id)
+                    :description)
     end
 end

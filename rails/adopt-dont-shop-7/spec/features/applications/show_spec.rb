@@ -14,9 +14,9 @@ RSpec.describe 'Pet application show page' do
       @pet8 = create(:pet, shelter: @shelter)
       @pet9 = create(:pet, shelter: @shelter)
       @pet10 = create(:pet, shelter: @shelter)
-      @application1 = create(:application, shelter: @shelter)
-      @application2 = create(:application, shelter: @shelter)
-      @application3 = create(:application, shelter: @shelter)
+      @application1 = create(:application)
+      @application2 = create(:application)
+      @application3 = create(:application)
       @application_pet1 = create(:application_pet, pet: @pet1, application: @application1)
       @application_pet2 = create(:application_pet, pet: @pet3, application: @application1)
       @application_pet3 = create(:application_pet, pet: @pet1, application: @application2)
@@ -155,7 +155,7 @@ RSpec.describe 'Pet application show page' do
     end
 
     it "when there are not pets on an application, a user can't submit the application" do
-      application4 = create(:application, shelter: @shelter)
+      application4 = create(:application)
 
       visit application_path(application4.id)
       expect(page).to_not have_button("Submit application")
