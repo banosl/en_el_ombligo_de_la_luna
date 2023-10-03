@@ -1,0 +1,55 @@
+<h1>Adoption Application for <%= @application.shelter.name %></h1>
+
+<p>Applicant name: <%= @application.first_name%> <%= @application.last_name %></p>
+
+<% if @application.address_2 != "" %>
+  <p>Address: <%= @application.address_1 %>  <%= @application.address_2  %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% else %>
+  <p>Address: <%= @application.address_1 %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% end %>
+
+
+<p>Why we'd make a good home for these pet(s): <%= @application.description %></p>
+
+<section id="pets">
+  <p>Pets on application:</p>
+  <% if @pets != [] %>
+      <% @pets.each do |pet| %>
+        <li><%= link_to pet.name, pet_path(pet.id) %></li>
+      <% end %>
+  <% else %>
+    <li> None </li>
+  <% end %>
+</section>
+
+<p>Application status: <%= @application.status %></p>
+
+
+<% if @application.status == "In Progress" %>
+  <section id="searching_pets">
+    <p>Add a pet to the application</p>
+
+    <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
+      <%= form.label :pet_search, "Enter a pet name:" %>
+      <%= form.text_field :pet_search %>
+      <%= form.submit "Search" %>
+    <% end %>
+
+  <% if @name %>
+    <section id="results">
+    <p>Results:</p>
+      <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
+    </section>
+  <% end %>
+  </section>
+
+  <% if @pets != [] %>
+    <section id=form_submission>
+      <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
+        <%= form.label :good_owner, "Why would you make a good owner?" %>
+        <%= form.text_area :good_owner %>
+        <%= form.submit "Submit application" %>
+      <% end %>
+    </section>
+  <% end %>
+<% end %>

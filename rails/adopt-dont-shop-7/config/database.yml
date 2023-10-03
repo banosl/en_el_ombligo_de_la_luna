@@ -82,5 +82,4 @@ test:
 production:
   <<: *default
   database: adopt_dont_shop_7_production
-  username: adopt_dont_shop_7
-  password: <%= ENV["ADOPT_DONT_SHOP_7_DATABASE_PASSWORD"] %>
+  url: <%= ENV['DATABASE_URL'] %>
