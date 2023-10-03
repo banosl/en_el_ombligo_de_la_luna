@@ -119,7 +119,37 @@ RSpec.describe 'Pet application show page' do
       within ("#pets") do
         expect(page).to have_content("\n#{@pet1.name} #{@pet7.name}")
       end
-      save_and_open_page
+    end
+
+    it "submit an application after adding pets to it. After submitting the application the status changes
+        to 'pending' and the search function and add pet to application function are no longer available.
+        In the submission section there is also a field for 'why I would make a good owner for these pets'" do
+        visit application_path(@application1)
+
+        within ("#pets") do
+          expect(page).to have_content("\n#{@pet1.name} #{@pet2.name} #{@pet3.name}")
+        end
+
+        within ("#searching_pets") do
+          expect(page).to have_content("Add a pet to the application")
+          expect(page).to have_field(:pet_search)
+          expect(page).to have_button("Search")
+        end
+
+        within ("#form_submission") do
+          expect(page).to have_field(:good_owner)
+          expect(page).to have_button("Submit application")
+
+          fill_in :good_owner, with: Faker::JapaneseMedia::OnePiece.quote
+          click_button "Submit application"
+        end
+       
+        expect(page).to have_content("Application status: Pending")
+        expect(page).to_not have_content("Add a pet to the application")
+        expect(page).to_not have_field(:pet_search)
+        expect(page).to_not have_button("Search")
+        expect(page).to_not have_field(:good_owner)
+        expect(page).to_not have_button("Submit application")
     end
   end
 end

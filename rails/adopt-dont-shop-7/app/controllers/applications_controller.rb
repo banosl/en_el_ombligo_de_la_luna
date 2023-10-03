@@ -2,6 +2,7 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find_by_id(params[:id])
     @pets = @application.pets
+    @shelter = @application.shelter
 
     if params[:commit] == "Search"
       if Pet.find_by(name: params[:pet_search])
@@ -15,6 +16,10 @@ class ApplicationsController < ApplicationController
     if params[:q]
       pet = Pet.find(params[:q])
       ApplicationPet.create(pet_id: pet.id, application_id: @application.id)
+    end
+
+    if params[:commit] == "Submit application"
+      @application.status = "Pending"
     end
   end
 

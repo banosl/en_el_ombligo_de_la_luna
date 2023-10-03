@@ -20,19 +20,32 @@
 
 <p>Application status: <%= @application.status %></p>
 
-<section id="searching_pets">
-  <p>Add a pet to the application</p>
 
-  <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
-    <%= form.label :pet_search, "Enter a pet name:" %>
-    <%= form.text_field :pet_search %>
-    <%= form.submit "Search" %>
+<% if @application.status == "In Progress" %>
+  <section id="searching_pets">
+    <p>Add a pet to the application</p>
+
+    <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
+      <%= form.label :pet_search, "Enter a pet name:" %>
+      <%= form.text_field :pet_search %>
+      <%= form.submit "Search" %>
+    <% end %>
+
+  <% if @name %>
+    <section id="results">
+    <p>Results:</p>
+      <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
+    </section>
   <% end %>
-
-<% if @name %>
-  <section id="results">
-  <p>Results:</p>
-    <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
   </section>
+
+  <% if @pets %>
+    <section id=form_submission>
+      <%= form_with url: application_path(@application.id), method: :get, local: true do |form| %>
+        <%= form.label :good_owner, "Why would you make a good owner?" %>
+        <%= form.text_area :good_owner %>
+        <%= form.submit "Submit application" %>
+      <% end %>
+    </section>
+  <% end %>
 <% end %>
-</section>
