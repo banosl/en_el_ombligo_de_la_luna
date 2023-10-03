@@ -1,0 +1,25 @@
+<h1>Adoption Application Review</h1>
+
+<p>Applicant name: <%= @application.first_name%> <%= @application.last_name %></p>
+
+<% if @application.address_2 != "" %>
+  <p>Address: <%= @application.address_1 %>  <%= @application.address_2  %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% else %>
+  <p>Address: <%= @application.address_1 %>, <%= @application.city %>, <%= @application.state %>, <%= @application.zip_code %></p>
+<% end %>
+
+
+<p>Why we'd make a good home for these pet(s): <%= @application.description %></p>
+
+<section id="pets">
+  <p>Pets on application:</p>
+  <% if @pets != [] %>
+      <% @pets.each do |pet| %>
+        <li><%= link_to pet.name, pet_path(pet.id) %></li>
+      <% end %>
+  <% else %>
+    <li> None </li>
+  <% end %>
+</section>
+
+<p>Application status: <%= @application.status %></p>
