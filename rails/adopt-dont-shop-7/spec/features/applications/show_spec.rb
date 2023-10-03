@@ -166,6 +166,9 @@ RSpec.describe 'Pet application show page' do
         @pet11 = Pet.create({name: "fluffy", age: 4, shelter_id: @shelter.id})
         @pet12 = Pet.create({name: "fluff", age: 1, shelter_id: @shelter.id})
         @pet13 = Pet.create({name: "mr. fluff", age: 6, shelter_id: @shelter.id})
+        @pet14 = Pet.create({name: "Fluffy", age: 4, shelter_id: @shelter.id})
+        @pet15 = Pet.create({name: "FLUFF", age: 1, shelter_id: @shelter.id})
+        @pet16 = Pet.create({name: "Mr. FLUFF", age: 6, shelter_id: @shelter.id})
       end
       it "I search for pets by name and I see any pet whose name partially matches my search" do
         visit application_path(@application2)
@@ -183,6 +186,25 @@ RSpec.describe 'Pet application show page' do
           expect(page).to have_content(@pet11.name)
           expect(page).to have_content(@pet12.name)
           expect(page).to have_content(@pet13.name)
+        end
+      end
+
+      it "I search for pets by name and I see any pet whose name partially matches my search and is case insensitive" do
+        visit application_path(@application2)
+
+        within ("#searching_pets") do
+          expect(page).to have_content("Add a pet to the application")
+          expect(page).to have_field(:pet_search)
+          expect(page).to have_button("Search")
+
+          fill_in :pet_search, with: "fluff"
+          click_button("Search")
+        end
+
+        within ("#results") do
+          expect(page).to have_content(@pet14.name)
+          expect(page).to have_content(@pet15.name)
+          expect(page).to have_content(@pet16.name)
         end
       end
     end

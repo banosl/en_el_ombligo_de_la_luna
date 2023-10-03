@@ -18,7 +18,7 @@ RSpec.describe "the shelters index" do
     expect(page).to have_content(@shelter_3.name)
   end
 
-  it "lists the shelters by most recently created first" do
+  xit "lists the shelters by most recently created first" do
     visit "/shelters"
 
     oldest = find("#shelter-#{@shelter_1.id}")
@@ -104,5 +104,17 @@ RSpec.describe "the shelters index" do
 
     expect(page).to have_content(@shelter_2.name)
     expect(page).to_not have_content(@shelter_1.name)
+  end
+
+  it "lists shelters in reverse alphabetical order by name" do
+    visit "/shelters"
+
+    a = find("#shelter-#{@shelter_1.id}")
+    r = find("#shelter-#{@shelter_2.id}")
+    f = find("#shelter-#{@shelter_3.id}")
+    
+    expect(r).to appear_before(f)
+    expect(r).to appear_before(a)
+    expect(f).to appear_before(a)
   end
 end

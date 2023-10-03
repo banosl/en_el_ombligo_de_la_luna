@@ -6,7 +6,7 @@ class ApplicationsController < ApplicationController
 
     if params[:commit] == "Search"
       if Pet.where("name like ?","%#{ params[:pet_search] }%")
-        @pet_results = Pet.where("name like ?","%#{ params[:pet_search] }%")
+        @pet_results = Pet.where("lower(name) like ?","%#{ params[:pet_search].downcase }%")
       end
     end
 

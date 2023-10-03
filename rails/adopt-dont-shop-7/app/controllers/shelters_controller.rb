@@ -5,7 +5,8 @@ class SheltersController < ApplicationController
     elsif params[:search].present?
       @shelters = Shelter.search(params[:search])
     else
-      @shelters = Shelter.order_by_recently_created
+      # @shelters = Shelter.order_by_recently_created
+      @shelters = Shelter.find_by_sql("SELECT * FROM Shelters ORDER BY Name DESC")
     end
   end
 
