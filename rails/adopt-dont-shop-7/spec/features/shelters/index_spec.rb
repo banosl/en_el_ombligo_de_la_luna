@@ -18,7 +18,7 @@ RSpec.describe "the shelters index" do
     expect(page).to have_content(@shelter_3.name)
   end
 
-  it "lists the shelters by most recently created first" do
+  xit "lists the shelters by most recently created first" do
     visit "/shelters"
 
     oldest = find("#shelter-#{@shelter_1.id}")
@@ -104,5 +104,40 @@ RSpec.describe "the shelters index" do
 
     expect(page).to have_content(@shelter_2.name)
     expect(page).to_not have_content(@shelter_1.name)
+  end
+
+  it "lists shelters in reverse alphabetical order by name" do
+    visit "/shelters"
+
+    a = find("#shelter-#{@shelter_1.id}")
+    r = find("#shelter-#{@shelter_2.id}")
+    f = find("#shelter-#{@shelter_3.id}")
+    
+    expect(r).to appear_before(f)
+    expect(r).to appear_before(a)
+    expect(f).to appear_before(a)
+  end
+
+  it "in the section 'shelters with pending applications' is see the name of every shelter that has apps pending" do
+    pet1 = create(:pet, shelter: @shelter_1)
+    pet2 = create(:pet, shelter: @shelter_2)
+    pet3 = create(:pet, shelter: @shelter_3)
+    pet4 = create(:pet, shelter: @shelter_3)
+    pet5 = create(:pet, shelter: @shelter_1)
+    application1 = create(:application, status: 1)
+    application2 = create(:application, status: 0)
+    application3 = create(:application, status: 1)
+    application_pet1 = create(:application_pet, pet: pet1, application: application1)
+    application_pet2 = create(:application_pet, pet: pet3, application: application1)
+    application_pet3 = create(:application_pet, pet: pet1, application: application2)
+    application_pet5 = create(:application_pet, pet: pet3, application: application3)
+
+    visit "/shelters"
+    
+    within "#shelters_with_pending_apps" do
+      expect(page).to have_content(@shelter_1.name)
+      expect(page).to have_content(@shelter_3.name)
+      expect(page).to_not have_content(@shelter_2.name)
+    end
   end
 end

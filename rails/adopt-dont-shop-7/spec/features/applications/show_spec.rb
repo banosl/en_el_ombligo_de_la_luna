@@ -14,9 +14,9 @@ RSpec.describe 'Pet application show page' do
       @pet8 = create(:pet, shelter: @shelter)
       @pet9 = create(:pet, shelter: @shelter)
       @pet10 = create(:pet, shelter: @shelter)
-      @application1 = create(:application, shelter: @shelter)
-      @application2 = create(:application, shelter: @shelter)
-      @application3 = create(:application, shelter: @shelter)
+      @application1 = create(:application)
+      @application2 = create(:application)
+      @application3 = create(:application)
       @application_pet1 = create(:application_pet, pet: @pet1, application: @application1)
       @application_pet2 = create(:application_pet, pet: @pet3, application: @application1)
       @application_pet3 = create(:application_pet, pet: @pet1, application: @application2)
@@ -112,7 +112,9 @@ RSpec.describe 'Pet application show page' do
         click_button("Search")
 
         within ("#results") do
-          click_link "Adopt this Pet"
+          within ("#pet_#{@pet7.id}") do
+            click_link "Adopt this Pet"
+          end
         end
       end
 
@@ -153,11 +155,58 @@ RSpec.describe 'Pet application show page' do
     end
 
     it "when there are not pets on an application, a user can't submit the application" do
-      application4 = create(:application, shelter: @shelter)
+      application4 = create(:application)
 
       visit application_path(application4.id)
-      save_and_open_page
       expect(page).to_not have_button("Submit application")
+    end
+
+    describe "Database Logic Part 1" do
+      before :each do
+        @pet11 = Pet.create({name: "fluffy", age: 4, shelter_id: @shelter.id})
+        @pet12 = Pet.create({name: "fluff", age: 1, shelter_id: @shelter.id})
+        @pet13 = Pet.create({name: "mr. fluff", age: 6, shelter_id: @shelter.id})
+        @pet14 = Pet.create({name: "Fluffy", age: 4, shelter_id: @shelter.id})
+        @pet15 = Pet.create({name: "FLUFF", age: 1, shelter_id: @shelter.id})
+        @pet16 = Pet.create({name: "Mr. FLUFF", age: 6, shelter_id: @shelter.id})
+      end
+      it "I search for pets by name and I see any pet whose name partially matches my search" do
+        visit application_path(@application2)
+
+        within ("#searching_pets") do
+          expect(page).to have_content("Add a pet to the application")
+          expect(page).to have_field(:pet_search)
+          expect(page).to have_button("Search")
+
+          fill_in :pet_search, with: "fluff"
+          click_button("Search")
+        end
+
+        within ("#results") do
+          expect(page).to have_content(@pet11.name)
+          expect(page).to have_content(@pet12.name)
+          expect(page).to have_content(@pet13.name)
+        end
+      end
+
+      it "I search for pets by name and I see any pet whose name partially matches my search and is case insensitive" do
+        visit application_path(@application2)
+
+        within ("#searching_pets") do
+          expect(page).to have_content("Add a pet to the application")
+          expect(page).to have_field(:pet_search)
+          expect(page).to have_button("Search")
+
+          fill_in :pet_search, with: "fluff"
+          click_button("Search")
+        end
+
+        within ("#results") do
+          expect(page).to have_content(@pet14.name)
+          expect(page).to have_content(@pet15.name)
+          expect(page).to have_content(@pet16.name)
+        end
+      end
     end
   end
 end

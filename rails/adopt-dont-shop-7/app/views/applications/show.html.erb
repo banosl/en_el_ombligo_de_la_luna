@@ -1,4 +1,4 @@
-<h1>Adoption Application for <%= @application.shelter.name %></h1>
+<h1>Adoption Application</h1>
 
 <p>Applicant name: <%= @application.first_name%> <%= @application.last_name %></p>
 
@@ -35,10 +35,14 @@
       <%= form.submit "Search" %>
     <% end %>
 
-  <% if @name %>
+  <% if @pet_results %>
     <section id="results">
     <p>Results:</p>
-      <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
+      <% @pet_results.each do |pet| %>
+        <section id="pet_<%= pet.id %>">
+          <li><%= pet.name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: pet.id %></li>
+        </section>
+      <% end %>
     </section>
   <% end %>
   </section>

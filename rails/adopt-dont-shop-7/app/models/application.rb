@@ -1,7 +1,6 @@
 class Application < ApplicationRecord
   has_many :application_pets, dependent: :destroy
   has_many :pets, through: :application_pets
-  belongs_to :shelter
 
   validates :first_name, presence: true 
   validates :last_name, presence: true

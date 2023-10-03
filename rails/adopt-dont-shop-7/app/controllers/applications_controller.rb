@@ -2,14 +2,10 @@ class ApplicationsController < ApplicationController
   def show
     @application = Application.find_by_id(params[:id])
     @pets = @application.pets
-    @shelter = @application.shelter
 
     if params[:commit] == "Search"
-      if Pet.find_by(name: params[:pet_search])
-        @pet_result = Pet.find_by(name: params[:pet_search])
-        @name = @pet_result.name
-      else
-        @name = "No pets by that name"
+      if Pet.where("name like ?","%#{ params[:pet_search] }%")
+        @pet_results = Pet.where("lower(name) like ?","%#{ params[:pet_search].downcase }%")
       end
     end
 
@@ -47,7 +43,6 @@ class ApplicationsController < ApplicationController
                     :city,
                     :state,
                     :zip_code,
-                    :description,
-                    :shelter_id)
+                    :description)
     end
 end
