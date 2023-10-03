@@ -112,7 +112,9 @@ RSpec.describe 'Pet application show page' do
         click_button("Search")
 
         within ("#results") do
-          click_link "Adopt this Pet"
+          within ("#pet_#{@pet7.id}") do
+            click_link "Adopt this Pet"
+          end
         end
       end
 
@@ -169,19 +171,19 @@ RSpec.describe 'Pet application show page' do
         visit application_path(@application2)
 
         within ("#searching_pets") do
-        expect(page).to have_content("Add a pet to the application")
-        expect(page).to have_field(:pet_search)
-        expect(page).to have_button("Search")
+          expect(page).to have_content("Add a pet to the application")
+          expect(page).to have_field(:pet_search)
+          expect(page).to have_button("Search")
 
-        fill_in :pet_search, with: "fluff"
-        click_button("Search")
+          fill_in :pet_search, with: "fluff"
+          click_button("Search")
+        end
 
         within ("#results") do
           expect(page).to have_content(@pet11.name)
           expect(page).to have_content(@pet12.name)
           expect(page).to have_content(@pet13.name)
         end
-      end
       end
     end
   end
