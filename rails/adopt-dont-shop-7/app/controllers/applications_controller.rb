@@ -5,11 +5,8 @@ class ApplicationsController < ApplicationController
     @shelter = @application.shelter
 
     if params[:commit] == "Search"
-      if Pet.find_by(name: params[:pet_search])
-        @pet_result = Pet.find_by(name: params[:pet_search])
-        @name = @pet_result.name
-      else
-        @name = "No pets by that name"
+      if Pet.where("name like ?","%#{ params[:pet_search] }%")
+        @pet_results = Pet.where("name like ?","%#{ params[:pet_search] }%")
       end
     end
 

@@ -35,10 +35,12 @@
       <%= form.submit "Search" %>
     <% end %>
 
-  <% if @name %>
+  <% if @pet_results %>
     <section id="results">
     <p>Results:</p>
-      <li><%= @name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: @pet_result.id %></li>
+      <% @pet_results.each do |pet| %>
+        <li><%= pet.name %> <%= link_to "Adopt this Pet", url: application_path(@application.id), q: pet.id %></li>
+      <% end %>
     </section>
   <% end %>
   </section>
