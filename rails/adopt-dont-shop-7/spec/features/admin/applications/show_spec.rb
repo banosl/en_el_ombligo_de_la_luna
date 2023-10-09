@@ -88,7 +88,8 @@ RSpec.describe "admin/applications/show_page" do
   end
 
   it "each pet has an 'approve application' button next to it. When clicked the page refreshes
-      and the pet that was just approved no longer has the button instead it just says 'approved'" do
+      and the pet that was just approved no longer has the button instead it just says 'approved'
+      The change on one application does not affect other applications with the same pet" do
     visit admin_application_path(@application1.id)
 
     within ("#pets") do
@@ -116,9 +117,21 @@ RSpec.describe "admin/applications/show_page" do
         expect(page).to have_content("Approved")
       end
     end
+
+    visit admin_application_path(@application3.id)
+
+    within ("#pets") do
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+    end
+
   end
 
-  it "each pet has an 'rject application' button next to it. When clicked the page refreshes
+  it "each pet has a 'reject application' button next to it. When clicked the page refreshes
       and the pet that was just rejected no longer has the button instead it just says 'rejected'" do
     visit admin_application_path(@application1.id)
 
@@ -134,7 +147,7 @@ RSpec.describe "admin/applications/show_page" do
         click_button "Reject Application"
       end
     end
-    save_and_open_page
+    
     within ("#pets") do
       within ("#pet_#{@pet1.id}") do
         expect(page).to have_button("Reject Application")
@@ -145,6 +158,17 @@ RSpec.describe "admin/applications/show_page" do
       within ("#pet_#{@pet3.id}") do
         expect(page).to_not have_button("Reject Application")
         expect(page).to have_content("Rejected")
+      end
+    end
+
+    visit admin_application_path(@application3.id)
+
+    within ("#pets") do
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Reject Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to have_button("Reject Application")
       end
     end
   end
