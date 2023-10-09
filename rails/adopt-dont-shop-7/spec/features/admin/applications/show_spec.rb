@@ -55,12 +55,19 @@ RSpec.describe "admin/applications/show_page" do
   it "names of all pets that this application is for (all names of pets should be links to their show page)" do
     visit admin_application_path(@application2.id)
     within ("#pets") do
-      expect(page).to have_content("\n#{@pet1.name}")
+      within ("#pet_#{@pet1.id}") do
+        expect(page).to have_content("#{@pet1.name}")
+      end
     end
     
     visit admin_application_path(@application3.id)
     within ("#pets") do
-      expect(page).to have_content("\n#{@pet2.name} #{@pet3.name}")
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_content("#{@pet2.name}")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to have_content("#{@pet3.name}")
+      end
     end
   end
 
@@ -78,5 +85,67 @@ RSpec.describe "admin/applications/show_page" do
     expect(page).to have_link("#{@pet1.name}", :href => pet_path(@pet1.id))
     expect(page).to have_link("#{@pet3.name}", :href => pet_path(@pet3.id))
     expect(page).to have_link("#{@pet2.name}", :href => pet_path(@pet2.id))
+  end
+
+  it "each pet has an 'approve application' button next to it. When clicked the page refreshes
+      and the pet that was just approved no longer has the button instead it just says 'approved'" do
+    visit admin_application_path(@application1.id)
+
+    within ("#pets") do
+      within ("#pet_#{@pet1.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to have_button("Approve Application")
+        click_button "Approve Application"
+      end
+    end
+
+    within ("#pets") do
+      within ("#pet_#{@pet1.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Approve Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to_not have_button("Approve Application")
+        expect(page).to have_content("Approved")
+      end
+    end
+  end
+
+  it "each pet has an 'rject application' button next to it. When clicked the page refreshes
+      and the pet that was just rejected no longer has the button instead it just says 'rejected'" do
+    visit admin_application_path(@application1.id)
+
+    within ("#pets") do
+      within ("#pet_#{@pet1.id}") do
+        expect(page).to have_button("Reject Application")
+      end
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Reject Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to have_button("Reject Application")
+        click_button "Reject Application"
+      end
+    end
+    save_and_open_page
+    within ("#pets") do
+      within ("#pet_#{@pet1.id}") do
+        expect(page).to have_button("Reject Application")
+      end
+      within ("#pet_#{@pet2.id}") do
+        expect(page).to have_button("Reject Application")
+      end
+      within ("#pet_#{@pet3.id}") do
+        expect(page).to_not have_button("Reject Application")
+        expect(page).to have_content("Rejected")
+      end
+    end
   end
 end

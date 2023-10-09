@@ -54,5 +54,6 @@ RSpec.describe "visiting the new application form page" do
     click_button "submit"
 
     expect(page).to have_content("A field can't be empty")
+    # expect(current_path).to eq
   end
 end

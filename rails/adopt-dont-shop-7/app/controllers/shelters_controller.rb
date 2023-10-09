@@ -8,7 +8,7 @@ class SheltersController < ApplicationController
       # @shelters = Shelter.order_by_recently_created
       @shelters = Shelter.find_by_sql("SELECT * FROM Shelters ORDER BY Name DESC")
     end
-    @shelters_with_pending_apps = Shelter.joins(:applications).where("applications.status = 1").distinct
+    @shelters_with_pending_apps = Shelter.joins(:applications).where("applications.status = 1").distinct #move to model
   end
   
   def pets
